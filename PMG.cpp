@@ -221,7 +221,9 @@ bool PMG::divideM()
 	tpi = max_element(PMG_point.begin(), PMG_point.end(), compare<2, false>);
 	box[2][0] = (*tpi).cood[2];
 
-	
-	
+	double dx, dy, dz;
+	dx = (box[0][1] - box[0][0]) / (double)nx;
+	dy = (box[1][1] - box[1][0]) / (double)ny;
+	dz = (box[2][1] - box[2][0]) / (double)nz;
 	return true;
 }

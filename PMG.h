@@ -18,7 +18,7 @@ public:
 
 	string infilename="example.poly";
 
-	int dx=1,dy=1,dz=1;
+	int nx=1,ny=1,nz=1;
 private:
 	vector<point> PMG_point;
 	vector<face> PMG_face;

@@ -16,7 +16,7 @@ public:
 	bool divideM();
 	bool writeNM();
 
-	string infilename="example.poly";
+	string infilename="box.poly";
 
 	int nx=1,ny=1,nz=1;
 private:

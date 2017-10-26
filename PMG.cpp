@@ -7,6 +7,7 @@
 #include<map>
 
 #include "PMG.h"
+#include "tetgen.h"
 
 using namespace std;
 
@@ -265,8 +266,8 @@ bool PMG::divideM()
 	for (int i = 0; i < 3; i++)
 	{
 		double temp[2] = { inner_box[i][0],inner_box[i][1] };
-		inner_box[i][0] = temp[0] * 1.0 - temp[1] * 0.0;
-		inner_box[i][1] = temp[1] * 1.0 - temp[0] * 0.0;
+		inner_box[i][0] = temp[0] * 1.2 - temp[1] * 0.2;
+		inner_box[i][1] = temp[1] * 1.2 - temp[0] * 0.2;
 	}
 
 	for (int i = 0; i < 3; i++)
@@ -460,6 +461,48 @@ bool PMG::divideM()
 			}
 		}
 	}
+
+	return true;
+}
+
+bool PMG::writeNM()
+{
+	tetgenbehavior b;
+
+	tetgenio in, addin, bgmin;
+
+	int ac=3;
+	char** av=new char*[ac];
+
+	av[0] = "";
+	av[1] = "temp_file0,0,0.poly";
+	av[2] = "-kpqa0.01";
+
+	if (!b.parse_commandline(ac, av)) {
+		terminatetetgen(NULL, 10);
+	}
+
+	// Read input files.
+	if (b.refine) { // -r
+		if (!in.load_tetmesh(b.infilename, (int)b.object)) {
+			terminatetetgen(NULL, 10);
+		}
+	}
+	else { // -p
+		if (!in.load_plc(b.infilename, (int)b.object)) {
+			terminatetetgen(NULL, 10);
+		}
+	}
+	if (b.insertaddpoints) { // -i
+							 // Try to read a .a.node file.
+		addin.load_node(b.addinfilename);
+	}
+	if (b.metric) { // -m
+					// Try to read a background mesh in files .b.node, .b.ele.
+		bgmin.load_tetmesh(b.bgmeshfilename, (int)b.object);
+	}
+
+	tetrahedralize(&b, &in, NULL, &addin, &bgmin);
 
 	return true;
 }

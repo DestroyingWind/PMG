@@ -16,5 +16,6 @@ int main(int argc,char* argv[])
 	PMG test;
 	test.readOM();
 	test.divideM();
+	test.writeNM();
 	return 0;
 }
